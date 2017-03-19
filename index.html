@@ -12,6 +12,11 @@
 		#messageArea{
 			display: none;
 		}
+		.date {
+		    font-size: 10px;
+		    float: right;
+		    margin-top: 4px;
+		}
 	</style>
 </head>
 <body>
@@ -73,7 +78,11 @@
 			$message.val('')
 		})
 
-		let msgTmp = (data) => $chat.append(`<div class="well"><strong>${data.user}: </strong>${data.msg}</div>`);
+		let msgTmp = (data) => $chat.append(`
+						<div class="well">
+							<strong>${data.user}:</strong> ${data.msg}
+							<span class="date">${new Date().toLocaleString()}</span>
+						</div>`);
 
 		socket.on('new message', (data)=>{
 			msgTmp(data)

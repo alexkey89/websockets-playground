@@ -56,29 +56,32 @@
 </div>
 
 <script>
-	$(function(){
-		var socket = io.connect();
-		var $messageForm = $('#messageForm')
-		var $message = $('#message')
-		var $chat = $('#chat')
-		var $messageArea = $('#messageArea')
-		var $userFormArea = $('#userFormArea')
-		var $userForm = $('#userForm')
-		var $users = $('#users')
-		var $username = $('#username')
+	$(()=>{
+		const socket = io.connect();
+		const $messageForm = $('#messageForm')
+		const $message = $('#message')
+		const $chat = $('#chat')
+		const $messageArea = $('#messageArea')
+		const $userFormArea = $('#userFormArea')
+		const $userForm = $('#userForm')
+		const $users = $('#users')
+		const $username = $('#username')
 
-		$messageForm.submit(function(e){
+		$messageForm.on('submit',(e)=>{
 			e.preventDefault();
 			socket.emit('send message', $message.val())
 			$message.val('')
 		})
-		socket.on('new message', function(data){
-			$chat.append('<div class="well"><strong>'+data.user+': </strong>'+data.msg+'</div>')
+
+		let msgTmp = (data) => $chat.append(`<div class="well"><strong>${data.user}: </strong>${data.msg}</div>`);
+
+		socket.on('new message', (data)=>{
+			msgTmp(data)
 		})
 
-		$userForm.submit(function(e){
+		$userForm.on('submit',(e)=>{
 			e.preventDefault();
-			socket.emit('new user', $username.val(), function(data){
+			socket.emit('new user', $username.val(), (data)=>{
 				if(data){
 					$userFormArea.hide();
 					$messageArea.show();
@@ -87,11 +90,10 @@
 			$username.val('')
 		})
 
-		socket.on('get users', function(data){
-			 var html = '';
-			 for (var i = 0; i < data.length; i++){
-				 html += '<li class="list-group-item">'+data[i]+'</li>'
-			 }
+		socket.on('get users', (data)=>{
+			let html = data.map((i)=>{
+				return `<li class="list-group-item">${i}</li>`
+			})
 			 $users.html(html);
 		})
 

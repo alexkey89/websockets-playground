@@ -9,7 +9,9 @@
   "author": "alex key",
   "license": "ISC",
   "dependencies": {
-    "socket.io": "*",
-    "express": "*"
+    "babel-cli": "^6.24.0",
+    "babel-preset-node6": "^11.0.0",
+    "express": "*",
+    "socket.io": "*"
   }
 }
